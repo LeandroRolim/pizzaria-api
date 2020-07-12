@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  app:
+    container_name: donnalita-app
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - ./:/var/www
+    ports:
+      - 1215:1215
+    networks:
+      - donnalita-db-network
+  db:
+    image: mysql:8
+    container_name: donnalita-db
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: laravel
+    volumes:
+      - donnalita-db:/var/lib/mysql
+    networks:
+      - donnalita-db-network
+    ports:
+      - 3306:3306
+networks:
+  donnalita-db-network:
+    driver: bridge
+
+volumes:
+  donnalita-db:
+    driver: local
